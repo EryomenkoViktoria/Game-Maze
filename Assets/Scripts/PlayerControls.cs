@@ -13,10 +13,10 @@ public class PlayerControls : MonoBehaviour
     Text textHealts;
 
     [SerializeField]
-    private float speed = 8f;
+    private float speed;
 
     [SerializeField]
-    private float health = 100f;
+    protected float health;
 
     internal static int attack = 30;
 
