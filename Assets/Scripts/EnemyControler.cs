@@ -13,7 +13,7 @@ public class EnemyControler : MonoBehaviour
     private Transform player;
 
     [SerializeField]
-    private LayerMask isGround, isPlayer;
+    private LayerMask isPlayer;
 
     public bool pauseNow;
 
@@ -24,9 +24,12 @@ public class EnemyControler : MonoBehaviour
 
     private bool playerInSightRange, playerInAttackRange;
 
+    new Rigidbody rigidbody;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        rigidbody = GetComponent<Rigidbody>();
         player = GameObject.Find("Player").transform;
     }
 
@@ -40,6 +43,11 @@ public class EnemyControler : MonoBehaviour
     {
         PlayerControls.OnPlayerHunter -= CheckHunter;
         GameManager.OnPauseNow -= CheckPause;
+    }
+
+    protected void DamagePlayer() 
+    {
+        rigidbody.AddForce(0, 150f, 0);
     }
 
     private void CheckPause(bool pause)
@@ -67,12 +75,7 @@ public class EnemyControler : MonoBehaviour
     private void Update()
     {
         if (!pauseNow)
-        {
-            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, isPlayer);
-            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, isPlayer);
-
             ChasePlayer();
-        }
     }
 
     private void ChasePlayer()
